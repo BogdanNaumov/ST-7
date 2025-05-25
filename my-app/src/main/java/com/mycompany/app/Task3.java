@@ -11,13 +11,11 @@ import org.json.simple.parser.JSONParser;
 public class Task3 {
     public static void main(String[] args) {
         try {
-            // Сформированный URL запроса
             String urlString = "https://api.open-meteo.com/v1/forecast?latitude=56&longitude=44&hourly=temperature_2m,rain&current=cloud_cover&timezone=Europe%2FMoscow&forecast_days=1&wind_speed_unit=ms";
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
-            // Чтение ответа от сервера
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String inputLine;
             StringBuilder jsonResponse = new StringBuilder();
@@ -26,17 +24,14 @@ public class Task3 {
             }
             in.close();
 
-            // Парсим JSON
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject) parser.parse(jsonResponse.toString());
 
-            // Извлекаем данные
             JSONObject hourly = (JSONObject) jsonObject.get("hourly");
             JSONArray timeArray = (JSONArray) hourly.get("time");
             JSONArray tempArray = (JSONArray) hourly.get("temperature_2m");
             JSONArray rainArray = (JSONArray) hourly.get("rain");
 
-            // Выводим таблицу
             System.out.printf("| %-3s | %-16s | %-11s | %-12s |\n", "№", "Дата/время", "Температура", "Осадки (мм)");
             System.out.println("|-----|------------------|-------------|--------------|");
 
